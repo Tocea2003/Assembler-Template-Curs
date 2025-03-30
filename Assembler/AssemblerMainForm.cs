@@ -189,6 +189,26 @@ namespace Assembler
             }
             GenerateObjectFile(asmElements, ASMFileTextBox.Text);
         }
+        private Dictionary<string, string> registerTable = new Dictionary<string, string>
+{
+    {"R0", "0000"},
+    {"R1", "0001"},
+    {"R2", "0010"},
+    {"R3", "0011"},
+    {"R4", "0100"},
+    {"R5", "0101"},
+    {"R6", "0110"},
+    {"R7", "0111"},
+    {"R8", "1000"},
+    {"R9", "1001"},
+    {"R10", "1010"},
+    {"R11", "1011"},
+    {"R12", "1100"},
+    {"R13", "1101"},
+    {"R14", "1110"},
+    {"R15", "1111"},
+   
+};
 
         private void GenerateObjectFile(List<string> tokens, string asmPath)
         {
@@ -218,7 +238,15 @@ namespace Assembler
 
                             while (j < tokens.Count && !opcodeTable.ContainsKey(tokens[j].ToUpper()))
                             {
-                                line += " " + tokens[j];
+                                string nextToken = tokens[j].ToUpper();
+                                if (registerTable.ContainsKey(nextToken))
+                                {
+                                    line += " " + registerTable[nextToken];
+                                }
+                                else
+                                {
+                                    line += " " + nextToken;
+                                }
                                 j++;
                             }
 
@@ -237,8 +265,6 @@ namespace Assembler
                     "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
 
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
